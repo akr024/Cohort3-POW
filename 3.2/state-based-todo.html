@@ -1,0 +1,47 @@
+<html>
+    <body>
+        <input type="text" placeholder="Type new element" />
+        <button onclick="add()">Insert</button>
+        <div id="todos"></div>
+    </body>
+    <script>
+        
+        let state = [];
+        let counter = 0;
+
+        function render(){
+
+            document.querySelector("#todos").innerHTML= "";
+
+            for(let i = 0; i < state.length; i++ ){
+                const createNewElement = document.createElement("div");
+        
+                createNewElement.setAttribute('id', i);
+                
+                const newSpan = document.createElement("span");
+                newSpan.innerHTML = state[i];
+                
+                const newButton = document.createElement("button");
+                newButton.innerHTML = "Delete";
+                newButton.setAttribute('onClick', `deleteElement(${i})`); // do not simply call the function without ``
+                
+                createNewElement.appendChild(newSpan);
+                createNewElement.appendChild(newButton);
+
+                const currDiv = document.querySelector("#todos");
+                currDiv.appendChild(createNewElement);
+            }
+        }
+        
+        function add(){
+            state.push(document.querySelector("input").value);
+            render();            
+        }
+
+        function deleteElement(elementId){
+            state.splice(elementId, 1);
+            render();
+        }
+    </script>
+
+</html>

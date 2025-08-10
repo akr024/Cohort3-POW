@@ -1,0 +1,28 @@
+<html>
+    <body>
+        <div>
+            <div></div>
+        </div>
+        <input type="text", placeholder="Type new element" />
+        <button onclick="add()">Insert</button>
+    </body>
+    <script>
+        let counter = 1;
+        function add(){
+            const newElementText = document.querySelector("input").value;
+            const createNewElement = document.createElement("div");
+            createNewElement.setAttribute('id', counter);
+            createNewElement.innerHTML = newElementText + "<button onclick='deleteElement("  + counter + ")'> Delete </button>";
+            const currDiv = document.querySelector("div");
+            currDiv.parentNode.appendChild(createNewElement);
+            counter++;
+        }
+
+        function deleteElement(elementId){
+            const deletionElement = document.getElementById(elementId);
+            const parent = deletionElement.parentNode;
+            parent.removeChild(deletionElement);
+        }
+    </script>
+
+</html>

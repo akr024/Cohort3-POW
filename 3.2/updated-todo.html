@@ -1,0 +1,45 @@
+<html>
+    <body>
+        <input type="text", placeholder="Type new element" />
+        <button onclick="add()">Insert</button>
+    </body>
+    <script>
+        let counter = 1;
+        function add(){
+
+            const newElementText = document.querySelector("input").value;
+            
+            if(newElementText== ''){
+                alert("Fill in text");
+                exit;
+            }
+
+            const createNewElement = document.createElement("div");
+            
+            createNewElement.setAttribute('id', counter);
+            
+            const newSpan = document.createElement("span");
+            newSpan.innerHTML = newElementText;
+            
+            const newButton = document.createElement("button");
+            newButton.innerHTML = "Delete";
+            newButton.setAttribute('onClick', `deleteElement(${counter})`); // do not simply call the function without ``
+            
+            createNewElement.appendChild(newSpan);
+            createNewElement.appendChild(newButton);
+
+            const currDiv = document.querySelector("body");
+            currDiv.appendChild(createNewElement);
+            counter++;
+        }
+
+        function deleteElement(elementId){
+            const deletionElement = document.getElementById(elementId);
+            console.log(deletionElement);
+            console.log(deletionElement.parentNode);
+            const parent = deletionElement.parentNode;
+            parent.removeChild(deletionElement);
+        }
+    </script>
+
+</html>
