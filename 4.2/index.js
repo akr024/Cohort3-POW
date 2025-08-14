@@ -20,7 +20,7 @@ function getTodos(){
 
 app.get('/todos', function(req, res){
     const todos = getTodos();
-    res.send("hello");
+    res.send(todos);
 })
 
 app.post('/todos', function(req, res){
