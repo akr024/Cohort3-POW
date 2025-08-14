@@ -9,15 +9,18 @@ app.use(express.json());
 const todosfile = path.join(__dirname, '/todos.json');
 
 function getTodos(){
-    const todosJSON = fs.readFileSync(todosfile);
+    const todosJSON = fs.readFileSync(todosfile, 'utf-8');
+    const todosWithoutUTF = fs.readFileSync(todosfile);
+    console.log("todos without utf", todosWithoutUTF);
+    console.log("todos with utf", todosJSON);
     const todos = JSON.parse(todosJSON);
-    console.log(todos);
+    console.log("todos parsed with JSON", todos);
     return todos;
 }
 
 app.get('/todos', function(req, res){
     const todos = getTodos();
-    res.send(todos);
+    res.send("hello");
 })
 
 app.post('/todos', function(req, res){
