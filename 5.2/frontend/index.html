@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Frontend</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <input id="a" type="text" placeholder="Number 1">
@@ -15,12 +16,9 @@
         const a = document.getElementById("a").value;
         const b = document.getElementById("b").value;
         // better to use axios to avoid header-specification
-        const res = await fetch("http://localhost:3000/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-                },
-        body: JSON.stringify({ a: a, b: b })
+        const res = await axios.post("http://localhost:3000/add", {
+            a: a,
+            b: b
         });
     }
 </script>
