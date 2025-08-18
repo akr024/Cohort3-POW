@@ -5,8 +5,8 @@ const app = express();
 app.use(express.json());
 
 app.get('/multiply', (req, res) => {
-    const a = (Number) (req.query.a);
-    const b = (Number) (req.query.b);
+    const a = req.query.a;
+    const b = req.query.b;
 
     console.log(a);
     console.log(b);
@@ -25,12 +25,12 @@ app.get('/add', (req, res) => {
 
     console.log(a+b);
 
-    res.send(a+b);
+    res.send((a+b));
 })
 
 app.get('/divide', (req, res) => {
-    const a = (Number) (req.query.a);
-    const b = (Number) (req.query.b);
+    const a = req.query.a;
+    const b = req.query.b;
 
     console.log(a);
     console.log(b);
@@ -41,8 +41,8 @@ app.get('/divide', (req, res) => {
 })
 
 app.get('/subtract', (req, res) => {
-    const a = (Number) (req.query.a);
-    const b = (Number) (req.query.b);
+    const a = req.query.a;
+    const b = req.query.b;
 
     console.log(a);
     console.log(b);
