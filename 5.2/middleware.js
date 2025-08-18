@@ -12,7 +12,7 @@ function logMWFunc(req, res, next){
     requestCount++;
     console.log("Request number:", requestCount);
     console.log("Method: " + req.method);
-    console.log("URL: http://localhost:3000/", req.url);
+    console.log("URL:", req.hostname); // req.url contains route, req.hostname contains the full rul
     const time = new Date;
     console.log("Timestamp", time);
 
