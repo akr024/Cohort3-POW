@@ -6,8 +6,6 @@ const app = express();
 
 let requestCount = 0;
 
-app.use(express.json());
-
 function logMWFunc(req, res, next){
     requestCount++;
     console.log("Request number:", requestCount);
