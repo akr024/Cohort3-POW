@@ -61,6 +61,30 @@ app.post('/signin', (req,res) => {
 
 })
 
+app.get('/me', function(req, res){
+    const token = req.headers.token;
+    console.log(token);
+
+    const user = users.find(function(user) {
+        if(user.token === token){
+            return true;
+        } else {
+            return false;
+        }
+    })
+
+    console.log(user)
+    if(user){
+        res.json({
+            username: user.username
+        });
+    } else {
+        res.json({
+            Error: "You are not authorized to access this"
+        })
+    }
+})
+
 app.listen(3000, function(){
     console.log("Server started at Port 3000");
 })
