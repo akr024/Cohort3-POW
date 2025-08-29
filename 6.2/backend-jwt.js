@@ -10,6 +10,21 @@ app.use(express.json());
 
 const users = []
 
+function auth(req, res, next){
+    try{
+        const token = req.headers.token;
+        const userId = jwt.verify(token, JWT_SECRET).userId; // {userId: 1}
+        req.userId = userId;
+        next();
+    } catch(err){
+        res.json({ 
+            Error: err.message,
+            Message: "You are not logged in"
+        })
+        return;
+    }
+}
+
 app.post('/signup', function(req, res){
     const username = req.body.username;
     const password = req.body.password;
@@ -37,12 +52,13 @@ app.post('/signin', function(req, res){
     const username = req.body.username;
     const password = req.body.password;
 
-    const user = users.find(u => u.username === username);
+    const user = users.find(u => u.username === username && u.password === password);
 
     if(user){
         const token = jwt.sign({
             userId: user.userId
         }, JWT_SECRET);
+        // res.header("token", token); - headers can be set like this in response
         res.json({
             message: "User signed in",
             token: token
@@ -54,22 +70,23 @@ app.post('/signin', function(req, res){
     }
 })
 
-app.get('/me', function(req, res){
+app.get('/me', auth, function(req, res){
     try{
-        const token = req.headers.token;
-        const userId = jwt.verify(token, JWT_SECRET).userId;
-
-        const user = users.find(u => u.userId === userId);
-
+        const user = users.find(u => u.userId === req.userId);
+ 
         // if(user) check not needed because if a userid is not found, control will reach catch
         // else if a userid is found, it means that the user exists and thus no check here is needed.
         res.json({
             username: user.username,
             password: user.password
-        })
+        }) 
     } catch(err){
         res.json({
             Error: err.message
         })
     }
+})
+
+app.listen(3000, function(){
+    console.log("Server start at port 3000");
 })
