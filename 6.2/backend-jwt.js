@@ -30,7 +30,7 @@ function auth(req, res, next){
 
 // hosting frontend on the same domain - use cors when frontend on different domain
 app.get('/', function(req, res){
-    res.sendFile("/Users/abhimanyukumar/VSCode_Projects/Cohort3-POW/6.2/public/index.html")
+    res.sendFile( __dirname + "/public/index.html")
 })
 
 app.post('/signup', function(req, res){
