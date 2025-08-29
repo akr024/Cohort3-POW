@@ -9,7 +9,7 @@ const JWT_SECRET = "mysecret";
 const app = express();
 app.use(express.json());
 
-app.use(cors()); // to add specific frontend http, just add an obj and add its address as a string
+// app.use(cors()); // at runtime: add an obj and add its address as a string
 
 const users = []
 
@@ -27,6 +27,11 @@ function auth(req, res, next){
         return;
     }
 }
+
+// hosting frontend on the same domain - use cors when frontend on different domain
+app.get('/', function(req, res){
+    res.sendFile("/Users/abhimanyukumar/VSCode_Projects/Cohort3-POW/6.2/public/index.html")
+})
 
 app.post('/signup', function(req, res){
     const username = req.body.username;
