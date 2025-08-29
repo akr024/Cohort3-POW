@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 
 const JWT_SECRET = "mysecret";
 
@@ -7,6 +8,8 @@ const JWT_SECRET = "mysecret";
 
 const app = express();
 app.use(express.json());
+
+app.use(cors()); // to add specific frontend http, just add an obj and add its address as a string
 
 const users = []
 
@@ -18,8 +21,8 @@ function auth(req, res, next){
         next();
     } catch(err){
         res.json({ 
-            Error: err.message,
-            Message: "You are not logged in"
+            error: err.message,
+            message: "You are not logged in"
         })
         return;
     }
@@ -33,7 +36,7 @@ app.post('/signup', function(req, res){
 
     if(user){
         res.json({
-            Error: "User already signed up"
+            error: "User already signed up"
         })
     } else {
         const newUser = {
@@ -65,7 +68,7 @@ app.post('/signin', function(req, res){
         })
     } else {
         res.json({
-            Error: "User not found"
+            error: "User not found"
         })
     }
 })
@@ -82,7 +85,7 @@ app.get('/me', auth, function(req, res){
         }) 
     } catch(err){
         res.json({
-            Error: err.message
+            error: err.message
         })
     }
 })
