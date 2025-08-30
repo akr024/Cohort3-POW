@@ -7,27 +7,76 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+
     async function signup(){
         const username = document.getElementById("signup-username").value;
         const password = document.getElementById("signup-password").value;
+
+        if(username == "" || password == ""){
+            alert('Username or password field missing')
+            return;
+        }
 
         const response = await axios.post("http://localhost:3000/signup", {
             username,
             password 
         })
-        if(response.error){
-            alert(response.error);
-        } else {
-            alert(response.message);
-        }   
+
+        if(response.data.error){
+            alert("User already exists")
+            return;
+        }
+        
+        alert("Signed up done");
     }
 
-    function signin(){
-        
+    async function signin(){
+        const username = document.getElementById("signin-username").value;
+        const password = document.getElementById("signin-password").value;
+
+
+        const response = await axios.post("http://localhost:3000/signin", {
+            username,
+            password 
+        })
+
+        console.log(response.data);
+
+        if(response.data.error){
+            alert("Incorrect credentials")
+            return;
+        }
+
+        localStorage.setItem("token", response.data.token)
+
+        getUserInfo();
+
+        alert(response.data.message);
+    }
+ 
+    async function getUserInfo(){
+        const response = await axios.get("http://localhost:3000/me", {
+            headers: {
+                token: localStorage.getItem("token")
+            }
+        })
+
+        document.getElementById("information").innerHTML = "Username: " + response.data.username + " Password: " + response.data.password;
+
+
     }
 
     function logout(){
+        localStorage.removeItem("token");
+        document.getElementById("information").innerHTML = "";
+        document.getElementById("signup-username").value = "";
+        document.getElementById("signup-password").value = "";
+        document.getElementById("signin-username").value = "";
+        document.getElementById("signin-password").value = "";
+    }
 
+    if(localStorage.getItem("token")){
+        getUserInfo();
     }
 
 </script>
@@ -35,13 +84,13 @@
     <div>
         <span>Sign up</span>
         <input id="signup-username" type="text" placeholder="Username"/>
-        <input id="signup-password" type="text" placeholder="Password"/>
+        <input id="signup-password" type="password" placeholder="Password"/>
         <button onclick="signup()">Submit</button>
     </div>
     <div> 
         <span>Sign in</span>
         <input id="signin-username" type="text" placeholder="Username"/>
-        <input id="signin-password" type="text" placeholder="Password"/>
+        <input id="signin-password" type="password" placeholder="Password"/>
         <button onclick="signin()">Submit</button>
     </div>
     <div id="userInfo">
