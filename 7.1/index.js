@@ -87,6 +87,6 @@ app.get('/todos', async function(req, res) {
 })
  
 app.listen(3000, async () => {
-    await mongoose.connect("mongodb+srv://akr:abcd@cluster0.xe0aftl.mongodb.net/todo-app-database?retryWrites=true&w=majority&appName=Cluster0");
+    await mongoose.connect("mongodb+srv://akr:<pass>@cluster0.xe0aftl.mongodb.net/todo-app-database?retryWrites=true&w=majority&appName=Cluster0");
     console.log("Server started at port 3000");
 })
