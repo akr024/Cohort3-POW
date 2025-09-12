@@ -52,32 +52,38 @@ app.post('/signup', async function(req, res){
 });
 
 app.post('/login', async function(req, res){
-    const email = req.body.email;
-    const password = req.body.password;
+    try{
+        const email = req.body.email;
+        const password = req.body.password;
 
-    const user = await UserModel.findOne({
-        email: email
-    })
-
-    if(!user){
-        res.status(403).json({
-            error: "User not found"
+        const user = await UserModel.findOne({
+            email: email
         })
-        return;
-    }
 
-    const passMatch = await bcrypt.compare(password, user.password);
+        if(!user){
+            res.status(403).json({
+                error: "User not found"
+            })
+            return;
+        }
 
-    if(passMatch){
-        const token = jwt.sign({
-            id: user._id
-        }, JWT_SECRET);
+        const passMatch = await bcrypt.compare(password, user.password);
+
+        if(passMatch){
+            const token = jwt.sign({
+                id: user._id
+            }, JWT_SECRET);
+            res.json({
+                token: token
+            })
+        } else{
+            res.json({
+                message: "Incorrect password or email does not exist"
+            })
+        }
+    } catch (e){
         res.json({
-            token: token
-        })
-    } else{
-        res.json({
-            message: "Incorrect password or email does not exist"
+            error: e
         })
     }
 });
@@ -86,43 +92,62 @@ app.use(auth);
 
 // authenticated endpoint
 app.post('/todos', async function(req, res){
-    const userId = req.userId;
-    const title = req.body.title;
-    const done = req.body.done;
+    try{
+            const userId = req.userId;
+            const title = req.body.title;
+            const done = req.body.done;
 
-    await TodoModel.create({
-        title: title,
-        done: done,
-        userId: userId
-    })
+            await TodoModel.create({
+                title: title,
+                done: done,
+                userId: userId
+            })
 
-    res.json({
-        message: "todo created successfully"
-    })
+            res.json({
+                message: "todo created successfully"
+            })
+    } catch (e){
+        res.status(401).json({
+            error: e
+        })
+    }
 });
 
 // authenticated endpoint
 app.get('/todos', async function(req, res) {
-    const userId = req.userId;
-    
-    const todos = await TodoModel.find({
-        userId: userId
-    })
-
-    if(todos){
-        res.json({
-            todos: todos
+    try{
+        const userId = req.userId;
+        
+        const todos = await TodoModel.find({
+            userId: userId
         })
-    } else{
-        res.status(403).json({
-            error: "no todos found"
+
+        if(todos){
+            res.json({
+                todos: todos
+            })
+        } else{
+            res.status(403).json({
+                error: "no todos found"
+            })
+    }
+    } catch(e) {
+        res.status(401).json({
+            error: e
         })
     }
+    
 })
  
 app.listen(3000, async () => {
-    // mongodb+srv://akr:<pass>@cluster0.xe0aftl.mongodb.net is cluster name
-    // todo-app-database is database name. cluster => multiple databases
-    await mongoose.connect("mongodb+srv://akr:<pass>@cluster0.xe0aftl.mongodb.net/todo-app-database?retryWrites=true&w=majority&appName=Cluster0");
-    console.log("Server started at port 3000");
+    try{
+        // mongodb+srv://akr:<pass>@cluster0.xe0aftl.mongodb.net is cluster name
+        // todo-app-database is database name. cluster => multiple databases
+        await mongoose.connect("mongodb+srv://akr:<pass>@cluster0.xe0aftl.mongodb.net/todo-app-database?retryWrites=true&w=majority&appName=Cluster0");
+        console.log("Server started at port 3000");
+    } catch (e) {
+        res.status(401).json({
+            error: e
+        })
+    }
 })
