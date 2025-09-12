@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const {auth, JWT_SECRET} = require('./auth')
 const mongoose = require('mongoose')
 const {UserModel, TodoModel} = require('./db')
+const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(express.json());
@@ -12,9 +13,12 @@ app.post('/signup', async function(req, res){
     const password = req.body.password;
     const name = req.body.name;
 
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 are the salt rounds - to complicate the salt
+
+
     const resp = await UserModel.create({
         email: email,
-        password: password,
+        password: hashedPassword,
         name: name
     })
 
@@ -30,11 +34,19 @@ app.post('/login', async function(req, res){
     const password = req.body.password;
 
     const user = await UserModel.findOne({
-        email: email,
-        password: password
+        email: email
     })
 
-    if(user){
+    if(!user){
+        res.status(403).json({
+            error: "User not found"
+        })
+        return;
+    }
+
+    const passMatch = await bcrypt.compare(password, user.password);
+
+    if(passMatch){
         const token = jwt.sign({
             id: user._id
         }, JWT_SECRET);
@@ -87,6 +99,8 @@ app.get('/todos', async function(req, res) {
 })
  
 app.listen(3000, async () => {
+    // mongodb+srv://akr:<pass>@cluster0.xe0aftl.mongodb.net is cluster name
+    // todo-app-database is database name. cluster => multiple databases
     await mongoose.connect("mongodb+srv://akr:<pass>@cluster0.xe0aftl.mongodb.net/todo-app-database?retryWrites=true&w=majority&appName=Cluster0");
     console.log("Server started at port 3000");
 })
