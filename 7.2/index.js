@@ -4,29 +4,51 @@ const {auth, JWT_SECRET} = require('./auth')
 const mongoose = require('mongoose')
 const {UserModel, TodoModel} = require('./db')
 const bcrypt = require('bcrypt');
+const {z} = require('zod');
 
 const app = express();
 app.use(express.json());
 
 app.post('/signup', async function(req, res){
-    const email = req.body.email;
-    const password = req.body.password;
-    const name = req.body.name;
+    try{
+        const requiredBody = z.object({
+            email: z.email().string().min(3).max(100),
+            password: z.string().min(3).max(100),
+            name: z.string().min(3).max(100)
+        })
+        const inputValid = requiredBody.safeParse(req.body);
 
-    const hashedPassword = await bcrypt.hash(password, 10); // 10 are the salt rounds - to complicate the salt
+        if(!inputValid.success){
+            res.json({
+                message: "input invalid",
+                error: inputValid.error
+            })
+        }
+
+        const email = req.body.email;
+        const password = req.body.password;
+        const name = req.body.name;
+        
+
+        const hashedPassword = await bcrypt.hash(password, 10); // 10 are the salt rounds - to complicate the salt
 
 
-    const resp = await UserModel.create({
-        email: email,
-        password: hashedPassword,
-        name: name
-    })
+        const resp = await UserModel.create({
+            email: email,
+            password: hashedPassword,
+            name: name
+        })
 
-    console.log(resp)
+        console.log(resp)
 
-    res.json({
-        message: "Signed up"
-    })
+        res.json({
+            message: "Signed up"
+        })
+    } catch (err){
+        res.json({
+            error: err.errorResponse.errmsg
+        })
+    }
 });
 
 app.post('/login', async function(req, res){
