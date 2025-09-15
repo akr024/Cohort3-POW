@@ -9,7 +9,7 @@ const {z} = require('zod');
 const app = express();
 app.use(express.json());
 
-app.post('/signup', async function(req, res){
+app.post('/signup', async function(req, res){ // verify https
     try{
         const requiredBody = z.object({
             email: z.email().string().min(3).max(100),
