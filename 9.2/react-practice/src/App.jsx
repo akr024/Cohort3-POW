@@ -1,10 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+
+  /* does not work
+  setInterval(function(){
+    setCount(count + 1)
+  }, 1000)
+  */
+
+  // note: with react.strictmode, useeffect is called twice on mount
+  useEffect(function(){
+    setInterval(function(){
+      setCount(function(count){
+        return count + 1;
+      })
+    }, 1000)
+  }, [])
 
   function increaseCount(){
     setCount(count + 1);
