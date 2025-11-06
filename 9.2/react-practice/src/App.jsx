@@ -1,43 +1,47 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
+// useEffect, dependency array, cleanups
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
-  /* does not work
-  setInterval(function(){
-    setCount(count + 1)
-  }, 1000)
-  */
-  function increaseCount(){
-    setCount(count + 1);
+   function increase(){
+    setCount(c => c + 1)
   }
-
-  function decreaseCount(){
-    setCount(count - 1);
-  }
-
-  function resetCount(){
-    setCount(0);
-  }
-
-  const [show, setShow] = useState(true)
-
-  function showChange(){
-    setShow(!show)
-  }
-
+  
   return (
     <div>
-      {show ? <h1>{count}</h1> : null}
-      <button onClick={showChange}>
-        {show ? "hide": "show"}
-      </button>
-      <button onClick={increaseCount}>increase</button>
-      <button onClick={decreaseCount}>decrease</button>
-      <button onClick={resetCount}>reset</button>
+      <Counter count={count}></Counter>
+      <button onClick={increase}>Increase</button>
     </div>
   )
 }
 
-export default App
+function Counter(props){
+
+  useEffect(function(){
+    console.log("Mounted")
+    return function(){
+      console.log("unmounted")
+    }
+  }, [])
+ 
+  useEffect(function(){
+    // this runs on the first mount of this component, since you 'initialised' the 
+    // state of the count variable.
+    console.log("count changed!")
+    // clean up logic
+    return function (){
+      console.log("clean up happened")
+    }
+  }, [props.count])
+
+
+  return (
+    <div>
+      Counter {props.count}
+    </div>
+  )
+}
+
+export default App;
