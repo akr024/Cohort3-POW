@@ -9,16 +9,6 @@ function App() {
     setCount(count + 1)
   }, 1000)
   */
-
-  // note: with react.strictmode, useeffect is called twice on mount
-  useEffect(function(){
-    setInterval(function(){
-      setCount(function(count){
-        return count + 1;
-      })
-    }, 1000)
-  }, [])
-
   function increaseCount(){
     setCount(count + 1);
   }
@@ -31,9 +21,18 @@ function App() {
     setCount(0);
   }
 
+  const [show, setShow] = useState(true)
+
+  function showChange(){
+    setShow(!show)
+  }
+
   return (
     <div>
-      <h1>{count}</h1>
+      {show ? <h1>{count}</h1> : null}
+      <button onClick={showChange}>
+        {show ? "hide": "show"}
+      </button>
       <button onClick={increaseCount}>increase</button>
       <button onClick={decreaseCount}>decrease</button>
       <button onClick={resetCount}>reset</button>
