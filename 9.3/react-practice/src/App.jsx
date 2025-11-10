@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -6,7 +6,7 @@ import './App.css'
 function App() {
 
   const [toggle, setToggle] = useState(true);
-
+  const [clock, setClock] = useState(0);
   const [posts, setPosts] = useState([
     {
       name: "Abhimanyu",
@@ -17,6 +17,20 @@ function App() {
       postImage: "https://media.licdn.com/dms/image/v2/D4D22AQGjZtbtawFVMw/feedshare-shrink_2048_1536/B4DZpemJDSGQAw-/0/1762523649720?e=1764201600&v=beta&t=870sBAv2TYrUxwBVOXCZaMsWdTGhikmNQ5AZkZJslUM"
     }
   ]);
+
+  useEffect(function(){
+    let clc = setInterval(function(){
+      setClock(function(currTime){
+        return currTime + 1;
+      })
+    }, 1000)
+
+    return( // executes when component app unmounted (makes more sense to be placed in a different component)
+      function(){
+        clearInterval(clc);
+      }
+    )
+  }, [])
 
   function toggleFunc(){
     setToggle(tog => !tog);
@@ -37,6 +51,9 @@ function App() {
 
   return (
     <>
+      <div>
+        {clock}
+      </div>
       <button onClick={toggleFunc}>
         Toggle
       </button>
