@@ -49,8 +49,25 @@ function App() {
     })
   }
 
+  const [currentTab, setCurrentTab] = useState("home");
+
+  useEffect(function(){
+    // to imitate api requests being sent to fetch currenttab's data
+    console.log("API request sent to " + currentTab);
+  }, [currentTab])
+
+
   return (
     <>
+      <button onClick={() => {setCurrentTab("home")}} style={{color: currentTab == "home" ? "red" : "black"}}>
+        Home
+      </button>
+      <button onClick={() => {setCurrentTab("notifications")}} style={{color: currentTab == "notifications" ? "red" : "black"}}>
+        Notifications
+      </button>
+      <button onClick={() => {setCurrentTab("profile")}} style={{color: currentTab == "profile" ? "red" : "black"}}>
+        Profile
+      </button>
       <div>
         {clock}
       </div>
