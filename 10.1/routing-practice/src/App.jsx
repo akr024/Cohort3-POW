@@ -1,23 +1,37 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {BrowserRouter, Routes, Route, Link, Outlet} from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 function App() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  const [count, setCount] = useState(0);
 
   const inp = useRef();
 
-  useEffect(function(){
-    setTimeout(function(){
-      console.log("navigating")
-      navigate("/contact")
-  }, 3000)
-  } , [])
+  let interval = useRef();
+
+  // useEffect(function(){
+  //   setTimeout(function(){
+  //     console.log("navigating")
+  //     navigate("/contact")
+  // }, 3000)
+  // } , [])
 
   function focus(){
     inp.current.focus();
   }
 
+  function watchStart(){
+    interval.current = setInterval(function(){
+      setCount(c => c + 1);
+    }, 1000)
+  }
+
+  function watchStop(){
+    console.log("watch stopped")
+    clearInterval(interval.current);
+  }
 
   return (
     <>
@@ -33,6 +47,21 @@ function App() {
       <input ref={inp} type="text" />
 
       <button onClick={focus}>Hello</button>
+
+      <br />
+      
+      <div>
+        <b>Stopwatch below:</b>
+      </div>
+
+      {count}
+
+      <br/>
+
+      <button onClick={watchStart}>Start</button>
+      <button onClick={watchStop}>Stop</button>
+
+
 
     </>
   )
