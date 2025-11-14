@@ -6,29 +6,34 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <div>
-          Header
-        </div>
-
-        <Link to="/">Home</Link> | 
-        <Link to="/about">About</Link> | 
-        <Link to="/contact">Contact</Link> 
-
+      
         <Routes>
-          <Route path="/" element={<Home/>}></Route>
-          <Route path="/about" element={<About/>}></Route>
-          <Route path="/contact" element={<Contact/>}></Route>
+          <Route path="/" element={<Layout/>}>
+            <Route path="/home" element={<Home/>}></Route>
+            <Route path="/about" element={<About/>}></Route>
+            <Route path="/contact" element={<Contact/>}></Route>
+          </Route>
         </Routes>
-
-        <div>
-          Footer
-        </div>
 
       </BrowserRouter>
     </>
   )
 }
 
+function Layout(){
+  return(
+    <> 
+      Header <br></br>
+      <Link to="/home">Home</Link> | 
+      <Link to="/about">About</Link> | 
+      <Link to="/contact">Contact</Link> 
+      <Outlet />
+
+      Footer
+    </>
+
+  )
+}
 
 function Contact(){
   return (
