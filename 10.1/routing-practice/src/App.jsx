@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import {BrowserRouter, Routes, Route, Link, Outlet} from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 function App() {
   const navigate = useNavigate();
+
+  const inp = useRef();
 
   useEffect(function(){
     setTimeout(function(){
@@ -11,6 +13,10 @@ function App() {
       navigate("/contact")
   }, 3000)
   } , [])
+
+  function focus(){
+    inp.current.focus();
+  }
 
 
   return (
@@ -23,6 +29,10 @@ function App() {
           <Route path="/contact" element={<Contact/>}></Route>
         </Route>
       </Routes>
+
+      <input ref={inp} type="text" />
+
+      <button onClick={focus}>Hello</button>
 
     </>
   )
