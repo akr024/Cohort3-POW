@@ -2,6 +2,8 @@ import { useState } from "react"
 
 function App() {
 
+  // issue: leads to prop drilling
+  // solution: use contextAPI
   const [lightStat, setLightStat] = useState(true);
 
   return (
