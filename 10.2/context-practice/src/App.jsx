@@ -1,29 +1,38 @@
-import { useState } from "react"
+import { createContext, useContext, useState } from "react"
+
+const BulbContext = createContext();
 
 function App() {
 
   // issue: leads to prop drilling
   // solution: use contextAPI
+  
   const [lightStat, setLightStat] = useState(true);
 
+
   return (
+    // ugly way of using contextAPI, without wrapper
     <>
-      <LightBulb lightStat={lightStat} setLightStat={setLightStat}/>
+      <BulbContext.Provider value={{lightStat: lightStat, setLightStat: setLightStat}}>
+        <LightBulb />
+      </BulbContext.Provider> 
     </>
   )
 }
 
 
-function LightBulb({lightStat, setLightStat}){
+function LightBulb(){
   return (
     <>
-      <LightStatus lightStat={lightStat} />
-      <ToggleButton setLightStat={setLightStat}/>
+      <LightStatus/>
+      <ToggleButton/>
     </>
   )
 }
 
-function ToggleButton({setLightStat}){
+function ToggleButton(){
+
+  const {setLightStat} = useContext(BulbContext);
 
   function switchLight(){
     setLightStat(c => !c)
@@ -36,7 +45,9 @@ function ToggleButton({setLightStat}){
   )
 }
 
-function LightStatus({lightStat}){
+function LightStatus(){
+  
+  const {lightStat} = useContext(BulbContext);
 
   return (
     <div>
