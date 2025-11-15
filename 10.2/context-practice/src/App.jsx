@@ -2,20 +2,24 @@ import { createContext, useContext, useState } from "react"
 
 const BulbContext = createContext();
 
-function App() {
+// wrap the context provider for better readability and maintenance
+function BulbProvider({children}){
 
-  // issue: leads to prop drilling
-  // solution: use contextAPI
-  
   const [lightStat, setLightStat] = useState(true);
 
+  return (<BulbContext.Provider value={{lightStat: lightStat, setLightStat: setLightStat}}>
+    {children}
+  </BulbContext.Provider>)
+}
+
+function App() {
 
   return (
     // ugly way of using contextAPI, without wrapper
     <>
-      <BulbContext.Provider value={{lightStat: lightStat, setLightStat: setLightStat}}>
+      <BulbProvider>
         <LightBulb />
-      </BulbContext.Provider> 
+      </BulbProvider> 
     </>
   )
 }
