@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-function App() {
-  
+
+function usePost(){
   const [posts, setPosts] = useState({});
 
   useEffect(function(){
@@ -12,6 +12,15 @@ function App() {
     }
     getPost();
   }, [])
+
+  return posts;
+
+}
+
+
+function App() {
+  
+  const posts = usePost();
 
   return (
     <>
