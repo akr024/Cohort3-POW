@@ -1,15 +1,27 @@
 import { useEffect, useState } from 'react'
 
 
-function useFetch(url){
+function useFetch(url, interval){
   const [posts, setPosts] = useState({});
 
+  async function getPost(){
+    const postsData = await fetch(url);
+    const posts = await postsData.json();
+    setPosts(posts);
+  }
+
+  useEffect(function() {
+    const inter = setInterval(function(){
+      getPost();
+    }, interval)
+
+    return (function(){
+      clearInterval(inter)
+    })
+  }, [])
+
+
   useEffect(function(){
-    async function getPost(){
-      const postsData = await fetch(url);
-      const posts = await postsData.json();
-      setPosts(posts);
-    }
     getPost();
   }, [url])
 
@@ -21,11 +33,12 @@ function useFetch(url){
 function App() {
   const [url, setUrl] = useState('https://jsonplaceholder.typicode.com/todos/1')
   
-  const posts = useFetch(url)
+  const posts = useFetch(url, 3000)
 
   function getData(num){
     setUrl('https://jsonplaceholder.typicode.com/todos/' + num)
   }
+
 
   return (
     <>
