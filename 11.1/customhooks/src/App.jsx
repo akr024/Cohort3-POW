@@ -1,28 +1,22 @@
-import { useState } from 'react'
-
-function useCounter(){
-  const [count, setCount] = useState(0)
-
-  function increaseCount(){
-    setCount(c => c +1);
-  }
-
-  return {
-    count: count,
-    increaseCount: increaseCount
-  }
-}
-
+import { useEffect, useState } from 'react'
 
 function App() {
   
-  const {count, increaseCount} = useCounter();
+  const [posts, setPosts] = useState({});
+
+  useEffect(function(){
+    async function getPost(){
+      const postsData = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+      const posts = await postsData.json();
+      setPosts(posts);
+    }
+    getPost();
+  }, [])
 
   return (
     <>
       <div>
-        {count}
-        <button onClick={increaseCount}>increase</button>
+        {posts.title}
       </div>
     </>
   )
