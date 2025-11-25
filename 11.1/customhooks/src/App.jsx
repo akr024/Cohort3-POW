@@ -1,29 +1,29 @@
+import { text } from 'express';
 import { useEffect, useRef, useState } from 'react'
 
-function usePrev(num){
-  let previous = useRef(null);
+function useDebounce(func) {
+  const clock = useRef();
 
-  // useEffect runs after returning previous.current on line 11
-  useEffect(function(){
-    previous.current = num
-  }, [num])
+  const fn = () => {
+    clearTimeout(clock.current)
+    clock.current = setTimeout(func, 700)
+  }
 
-  return previous.current;
+  return fn
 }
 
 
 function App() {
-  const [count, setCount] = useState(0);
-  const result = usePrev(count);
-  console.log(result)
+   
+  function textChange(){
+    console.log("request sent" )
+  }
+
+  const debouncedFunc = useDebounce(textChange);
 
   return (
     <>
-      <div>
-        {count}
-        <button onClick={() => {setCount(c=>c+1)}}>increase</button>
-        previous value: {result}
-      </div>
+      <input type="text" onChange={debouncedFunc} />
     </>
   )
 }

@@ -15,7 +15,7 @@ function BulbProvider({children}){
 function App() {
 
   return (
-    // ugly way of using contextAPI, without wrapper
+    // better way of using contextAPI with a BulbProvider wrapper
     <>
       <BulbProvider>
         <LightBulb />
