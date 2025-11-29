@@ -1,26 +1,29 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, memo, useContext, useState } from 'react'
 import './App.css'
-import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil'
-import countAtom from '../atom/atom'
 
-// REACT19 DOES NOT SUPPORT RECOIL ANY LONGER,
-// USING RECOIL FOR LEARNING PURPOSES TO LATER MIGRATE TO ZUSTAND
+const appContext = createContext();
+
 function App() {
+  const [count, setCount] = useState(0);
+
+
 
   return (
     <>
-      <RecoilRoot>
-        <Value/>
-        <Increase/>
-        <Decrease />
-      </RecoilRoot>
+      <appContext.Provider value={{count, setCount}}>
+        <MemoizedIncrease />
+        <MemoizedDecrease />
+        <Value />
+      </appContext.Provider>
+      
     </>
   )
 }
 
+const MemoizedIncrease = memo(Increase)
 
-function Increase(){
-  const setCount = useSetRecoilState(countAtom);
+function Increase (){
+  const {setCount} = useContext(appContext);
 
   return (
     <div>
@@ -29,9 +32,10 @@ function Increase(){
   )
 }
 
+const MemoizedDecrease= memo(Decrease)
 
 function Decrease(){
-  const setCount = useSetRecoilState(countAtom);
+  const {setCount} = useContext(appContext);
 
   return (
     <div>
@@ -42,7 +46,7 @@ function Decrease(){
 
 
 function Value(){
-  const count = useRecoilValue(countAtom);
+  const {count} = useContext(appContext);
 
   return (
     <div>
