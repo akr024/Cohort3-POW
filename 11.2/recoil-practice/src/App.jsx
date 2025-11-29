@@ -1,41 +1,48 @@
-import { createContext, memo, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import './App.css'
+import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil'
+import {countAtom, isEven } from '../atom/atom'
 
-const appContext = createContext();
-
+// REACT19 DOES NOT SUPPORT RECOIL ANY LONGER,
+// USING RECOIL FOR LEARNING PURPOSES TO LATER MIGRATE TO ZUSTAND
 function App() {
-  const [count, setCount] = useState(0);
-
-
 
   return (
     <>
-      <appContext.Provider value={{count, setCount}}>
-        <MemoizedIncrease />
-        <MemoizedDecrease />
-        <Value />
-      </appContext.Provider>
-      
+      <RecoilRoot>
+        <Value/>
+        <IsEven />
+        <Increase/>
+        <Decrease />
+      </RecoilRoot>
     </>
   )
 }
 
-const MemoizedIncrease = memo(Increase)
-
-function Increase (){
-  const {setCount} = useContext(appContext);
-
-  return (
+function IsEven(){
+  const even = useRecoilValue(isEven)
+  
+  return(
     <div>
-      <button onClick={() => {setCount(c => c+1)}}>Increase</button>
+      {even ? "even" : "odd"}
     </div>
   )
 }
 
-const MemoizedDecrease= memo(Decrease)
+
+function Increase(){
+  const setCount = useSetRecoilState(countAtom);
+
+  return (
+    <div>
+      <button onClick={() => {setCount(c => c+2)}}>Increase</button>
+    </div>
+  )
+}
+
 
 function Decrease(){
-  const {setCount} = useContext(appContext);
+  const setCount = useSetRecoilState(countAtom);
 
   return (
     <div>
@@ -46,7 +53,7 @@ function Decrease(){
 
 
 function Value(){
-  const {count} = useContext(appContext);
+  const count = useRecoilValue(countAtom);
 
   return (
     <div>

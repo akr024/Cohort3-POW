@@ -1,8 +1,15 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 
-const countAtom = atom({
+export const countAtom = atom({
     key: "countAtom",
     default: 0
 })
 
-export default countAtom;
+export const isEven = selector({
+    key: "isEven",
+    get: function({get}){
+        const count = get(countAtom);
+        return count % 2 == 0;
+    }
+})
+
