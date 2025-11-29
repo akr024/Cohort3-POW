@@ -1,26 +1,34 @@
 import { createContext, useContext, useState } from 'react'
 import './App.css'
-import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil'
-import countAtom from '../atom/atom'
 
-// REACT19 DOES NOT SUPPORT RECOIL ANY LONGER,
-// USING RECOIL FOR LEARNING PURPOSES TO LATER MIGRATE TO ZUSTAND
+const appContext = createContext();
+
 function App() {
+  const [count, setCount] = useState(0);
+
+
 
   return (
     <>
-      <RecoilRoot>
-        <Value/>
-        <Increase/>
+      <appContext.Provider value={{count, setCount}}>
+        <Increase />
         <Decrease />
-      </RecoilRoot>
+        <Value />
+      </appContext.Provider>
+      
     </>
   )
 }
 
+function implementAI(){
+  return <div>
+    
+  </div>
+}
+
 
 function Increase(){
-  const setCount = useSetRecoilState(countAtom);
+  const {setCount} = useContext(appContext);
 
   return (
     <div>
@@ -31,7 +39,7 @@ function Increase(){
 
 
 function Decrease(){
-  const setCount = useSetRecoilState(countAtom);
+  const {setCount} = useContext(appContext);
 
   return (
     <div>
@@ -42,7 +50,7 @@ function Decrease(){
 
 
 function Value(){
-  const count = useRecoilValue(countAtom);
+  const {count} = useContext(appContext);
 
   return (
     <div>
