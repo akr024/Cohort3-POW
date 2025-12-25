@@ -1,14 +1,31 @@
-interface RandomType {
-    age?: number, // optional field
-    name: string
+// interface RandomType {
+//     age?: number, // optional field
+//     name: string
+// }
+
+// const user: RandomType = {
+//     name: "random name",
+//     age: 30
+// }
+
+// // also works without age as age is optional because of ? at the end
+// const userWithoutAge: RandomType = {
+//     name: "random name"
+// }
+
+type UserType = {
+    name: string,
+    status: string
 }
 
-const user: RandomType = {
-    name: "random name",
-    age: 30
+
+type AdminType = {
+    name: string,
+    powerLevel: string
 }
 
-// also works without age as age is optional because of ? at the end
-const userWithoutAge: RandomType = {
-    name: "random name"
+function sayHello (user: UserType | AdminType): string {
+    return "welcome " + user.name   
 }
+
+console.log(sayHello({name: "a name", status: "junior employee"}));
