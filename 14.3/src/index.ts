@@ -68,9 +68,28 @@
 
 // API Map
 
-const UserAddressMap = new Map<number, string>() //map is a class which needs to be initialised, very similar to Java
-UserAddressMap.set(4, "030 drive");
-UserAddressMap.get(4);
-UserAddressMap.delete(4);
+// const UserAddressMap = new Map<number, string>() //map is a class which needs to be initialised, very similar to Java
+// UserAddressMap.set(4, "030 drive");
+// UserAddressMap.get(4);
+// UserAddressMap.delete(4);
 
+// Exclude
+
+// type RandomTypes = number | string | boolean
+// type ExcludeBool = Exclude<RandomTypes, boolean>
+
+// const excludedBool: ExcludeBool = false // gives error as boolean excluded
+
+import z from 'zod';
+
+const UserInputSchema = z.object({
+    name: z.string().min(1)
+})
+
+type UserSchemaType = z.infer<typeof UserInputSchema> // this returns {name: string}
+
+const user: UserSchemaType = {
+    // name: 3 // error because name is inferred to be string
+    name: "whatever"
+}
 
