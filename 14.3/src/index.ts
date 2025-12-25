@@ -34,26 +34,43 @@
 
 // Readonly API
 
-type dataObj = {
-    readonly name: string,
-    readonly info: boolean
-} // now, once an obj is initialised, name and info are unchangeable
+// type dataObj = {
+//     readonly name: string,
+//     readonly info: boolean
+// } // now, once an obj is initialised, name and info are unchangeable
 
-const data: dataObj = {
-    name: "someName",
-    info: true
-}
+// const data: dataObj = {
+//     name: "someName",
+//     info: true
+// }
 
-// OR
+// // OR
 
-type dataObj2 = {
-    name: string,
-    info: boolean
-}
+// type dataObj2 = {
+//     name: string,
+//     info: boolean
+// }
 
-const data2: Readonly<dataObj2> = {
-    name: "someName",
-    info: true
-}
+// const data2: Readonly<dataObj2> = {
+//     name: "someName",
+//     info: true
+// }
 
-// data2.name = "someothername" // not allowed anymore, diff syntax
+// // data2.name = "someothername" // not allowed anymore, diff syntax
+
+// API Records
+
+// type UserIdToAddress = Record<number, string>
+
+// const userAddObj: UserIdToAddress = {
+//     3: "200 cal drive"
+// }
+
+// API Map
+
+const UserAddressMap = new Map<number, string>() //map is a class which needs to be initialised, very similar to Java
+UserAddressMap.set(4, "030 drive");
+UserAddressMap.get(4);
+UserAddressMap.delete(4);
+
+
