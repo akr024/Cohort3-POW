@@ -13,19 +13,51 @@
 //     name: "random name"
 // }
 
-type UserType = {
+// type UserType = {
+//     name: string,
+//     status: string
+// }
+
+
+// type AdminType = {
+//     name: string,
+//     powerLevel: string
+// }
+
+// function sayHello (user: UserType | AdminType): string {
+//     return "welcome " + user.name   
+// }
+
+// console.log(sayHello({name: "a name", status: "junior employee"}));
+
+type User = {
     name: string,
-    status: string
+    age: number
+}
+
+const user1: User = {
+    name: "user1",
+    age: 17
+}
+
+const user2: User = {
+    name: "user2",
+    age: 39
 }
 
 
-type AdminType = {
-    name: string,
-    powerLevel: string
+const users = [user1, user2]
+
+function legalUsers(users: User[]){
+    const legalUser: User[] = [];
+
+    for(let i = 0; i < users.length; i++){
+        if(users[i].age >= 18){
+            legalUser.push(users[i]);
+        }
+    }
+
+    return legalUser;
 }
 
-function sayHello (user: UserType | AdminType): string {
-    return "welcome " + user.name   
-}
-
-console.log(sayHello({name: "a name", status: "junior employee"}));
+console.log(legalUsers(users))

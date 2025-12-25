@@ -21,7 +21,7 @@
     "declarationMap": true,
 
     // Stricter Typechecking Options
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false, // this assumes that an array could be empty and causes an error
     "exactOptionalPropertyTypes": true,
 
     // Style Options
